@@ -1,5 +1,4 @@
-import { ResultSetHeader } from "mysql2";
-
+import { ResultSetHeader, QueryError } from "mysql2";
 import connection from "../db/index";
 import Movie from "../models/movie.model";
 
@@ -17,7 +16,7 @@ class MovieRepository implements IMovieRepository {
             connection.query<ResultSetHeader>(
                 "INSERT INTO movies (title, language, overview, poster_path, rating, rating_count, release_date, watched) VALUES (?,?,?,?,?,?,?,?,?)",
                 [movie.title, movie.language, movie.overview, movie.poster_path, movie.rating, movie.rating_count, movie.release_date, movie.watched ? movie.watched : false],
-                (err, res) => {
+                (err: QueryError | null, res: ResultSetHeader) => {
                     if (err) reject(err);
                     else
                         this.retrieveById(res.insertId)
@@ -45,7 +44,7 @@ class MovieRepository implements IMovieRepository {
         }
 
         return new Promise((resolve, reject) => {
-            connection.query<Movie[]>(query, (err, res) => {
+            connection.query<Movie[]>(query, (err: QueryError | null, res: Movie[]) => {
                 if (err) reject(err)
                 else resolve(res);
             });
@@ -57,7 +56,7 @@ class MovieRepository implements IMovieRepository {
             connection.query<Movie[]>(
             "SELECT * FROM movies WHERE id = ?",
             [movieId],
-            (err, res) => {
+            (err: QueryError | null, res: Movie[]) => {
                 if (err) reject(err);
                 else resolve(res?.[0]);
             }
@@ -70,7 +69,7 @@ class MovieRepository implements IMovieRepository {
             connection.query<ResultSetHeader>(
             "UPDATE movies SET title = ?, language = ?, overview = ?, poster_path = ?, rating = ?, rating_count = ?, release_date = ?, watched = ? WHERE id = ?",
             [movie.title, movie.language, movie.overview, movie.poster_path, movie.rating, movie.rating_count, movie.release_date, movie.watched ? movie.watched : false, movie.id],
-            (err, res) => {
+            (err: QueryError | null, res: ResultSetHeader) => {
                 if (err) reject(err);
                 else resolve(res.affectedRows);
             }
@@ -83,7 +82,7 @@ class MovieRepository implements IMovieRepository {
             connection.query<ResultSetHeader>(
             "DELETE FROM movies WHERE id = ?",
             [movieId],
-            (err, res) => {
+            (err: QueryError | null, res: ResultSetHeader) => {
                 if (err) reject(err);
                 else resolve(res.affectedRows);
             }

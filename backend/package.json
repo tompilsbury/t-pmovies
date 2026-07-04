@@ -5,21 +5,24 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc -p",
+    "build": "tsc",
     "dev": "nodemon src/app.ts",
-    "start": "node dist/app.js"
+    "start": "node dist/app.js",
+    "updateMovies": "node dist/scripts/updateMovies.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@types/node": "^26.1.0",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^6.0.3"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "mysql2": "^3.22.5"
   }
 }
