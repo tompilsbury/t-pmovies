@@ -15,8 +15,8 @@ class MovieRepository implements IMovieRepository {
     save(movie: Movie): Promise<Movie> {
         return new Promise((resolve, reject) => {
             connection.query<ResultSetHeader>(
-                "INSERT INTO movies (title, image, watched) VALUES (?,?,?)",
-                [movie.title, movie.image, movie.watched ? movie.watched : false],
+                "INSERT INTO movies (title, language, overview, poster_path, rating, rating_count, release_date, watched) VALUES (?,?,?,?,?,?,?,?,?)",
+                [movie.title, movie.language, movie.overview, movie.poster_path, movie.rating, movie.rating_count, movie.release_date, movie.watched ? movie.watched : false],
                 (err, res) => {
                     if (err) reject(err);
                     else
@@ -68,8 +68,8 @@ class MovieRepository implements IMovieRepository {
     update(movie: Movie): Promise<number> {
         return new Promise((resolve, reject) => {
             connection.query<ResultSetHeader>(
-            "UPDATE movies SET title = ?, image = ?, watched = ? WHERE id = ?",
-            [movie.title, movie.description, movie.published, movie.id],
+            "UPDATE movies SET title = ?, language = ?, overview = ?, poster_path = ?, rating = ?, rating_count = ?, release_date = ?, watched = ? WHERE id = ?",
+            [movie.title, movie.language, movie.overview, movie.poster_path, movie.rating, movie.rating_count, movie.release_date, movie.watched ? movie.watched : false, movie.id],
             (err, res) => {
                 if (err) reject(err);
                 else resolve(res.affectedRows);
