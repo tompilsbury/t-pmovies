@@ -8,7 +8,7 @@ interface IWatchedRepository {
         notes: string | null
     ): Promise<WatchedMovie>;
     retrieveAll(): Promise<WatchedMovie[]>;
-    retrieveById(movieId: number): Promise<WatchedMovie | undefined>;
+    retrieveById(movieId: number): Promise<WatchedMovie | null>;
     update(movie: WatchedMovie): Promise<number>;
     delete(movieId: number): Promise<number>;
 }
@@ -44,14 +44,14 @@ class WatchedRepository implements IWatchedRepository {
         });
     }
 
-    retrieveById(movieId: number): Promise<WatchedMovie> {
+    retrieveById(movieId: number): Promise<WatchedMovie | null> {
         return new Promise((resolve, reject) => {
             connection.query<WatchedMovie[]>(
             "SELECT * FROM movies WHERE movieId = ?",
             [movieId],
             (err: QueryError | null, res: WatchedMovie[]) => {
                 if (err) reject(err);
-                else resolve(res?.[0]);
+                else resolve(res?.[0] ?? null);
             }
             );
         });
