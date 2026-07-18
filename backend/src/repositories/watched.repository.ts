@@ -1,8 +1,8 @@
 import { ResultSetHeader, QueryError } from "mysql2";
 import connection from "../db/index";
-import WatchedMovie from "../models/watchedMovie.model";
+import WatchedMovie from "../models/watched.model";
 
-interface IWatchedMovieRepository {
+interface IWatchedRepository {
     save(movieId: number, 
         rating: number | null, 
         notes: string | null
@@ -13,7 +13,7 @@ interface IWatchedMovieRepository {
     delete(movieId: number): Promise<number>;
 }
 
-class WatchedMovieRepository implements IWatchedMovieRepository { 
+class WatchedRepository implements IWatchedRepository { 
     save(movieId: number, 
         rating: number | null, 
         notes: string | null
@@ -84,4 +84,4 @@ class WatchedMovieRepository implements IWatchedMovieRepository {
     }
 }
 
-export default new WatchedMovieRepository();
+export default new WatchedRepository();
